@@ -1,7 +1,6 @@
 
 {
   "arquivos_participantes": [
-    "https://raw.githubusercontent.com/silvanojunior-web/dashboard-dados/refs/heads/main/report.json",
-  
+    "https://raw.githubusercontent.com/silvanojunior-web/dashboard-dados/main/report.json"
   ]
 }

@@ -4,103 +4,83 @@
       "files": {
         "codigo.c": {
           "coverage_stats": {
-            "covered_lines": 6,
-            "total_hits": 6
+            "covered_lines": 5,
+            "total_hits": 13
           },
           "covered_lines": {
-            "20": {
+            "14": {
               "covered": true,
               "hits": 1,
               "type": "execution"
             },
-            "21": {
+            "15": {
               "covered": true,
               "hits": 1,
               "type": "execution"
             },
-            "31": {
+            "16": {
               "covered": true,
-              "hits": 1,
-              "type": "execution"
-            },
-            "36": {
-              "covered": true,
-              "hits": 1,
+              "hits": 5,
               "type": "violation"
             },
-            "42": {
+            "7": {
               "covered": true,
               "hits": 1,
               "type": "execution"
             },
-            "46": {
+            "8": {
               "covered": true,
-              "hits": 1,
-              "type": "execution"
+              "hits": 5,
+              "type": "violation"
             }
           }
         }
       }
     },
     "initial_values": {
-      "h": {
-        "name": "h",
-        "type": "unknown(12)",
-        "value": "1.401298e-45f"
+      "a": {
+        "name": "a",
+        "type": "pointer",
+        "value": {
+          "__type": "pointer",
+          "address": "(signed int *)0",
+          "value": "*(signed int *)0"
+        }
       },
-      "t": {
-        "name": "t",
-        "type": "unknown(12)",
-        "value": "1.401298e-45f"
+      "b": {
+        "name": "b",
+        "type": "pointer",
+        "value": {
+          "__type": "pointer",
+          "address": "(signed int *)0",
+          "value": "*(signed int *)0"
+        }
       }
     },
     "source_files": {
       "codigo.c": [
-        "// versao_para_analise.c",
-        "#include <stdio.h>",
-        "#include <math.h> // Para isnan",
-        "",
-        "// Funções \"nondet\" dizem ao ESBMC para testar com QUALQUER valor possível",
-        "float nondet_float();",
-        "int nondet_int();",
-        "",
-        "// 1. SIMULAMOS as funções de hardware com \"stubs\" (versões vazias ou simples)",
-        "void client_publish(const char* topic, const char* payload) {",
-        "    // No teste, não precisamos realmente publicar.",
-        "    // Podemos verificar se o payload não é nulo.",
-        "    __ESBMC_assert(payload != 0, \"Payload não pode ser nulo\");",
+        "#include <stdlib.h>",
+        "int *a, *b;",
+        "int n;",
+        "#define BLOCK_SIZE 128",
+        "void foo () {",
+        "  int i;",
+        "  for (i = 0; i < n; i++)",
+        "    a[i] = -1;",
+        "  for (i = 0; i < BLOCK_SIZE - 1; i++)",
+        "    b[i] = -1;",
         "}",
-        "",
-        "// 2. RECRIAMOS A LÓGICA PRINCIPAL dentro de uma função main() padrão",
-        "int main() {",
-        "    // Simula a leitura dos sensores com valores não determinísticos.",
-        "    // O ESBMC vai testar o que acontece com valores normais, infinitos, NaN, etc.",
-        "    float h = nondet_float();",
-        "    float t = nondet_float();",
-        "",
-        "    // Valida a leitura (exatamente como no seu código original)",
-        "    if (isnan(h) || isnan(t)) {",
-        "        printf(\"Falha ao ler do DHT (simulado)\\n\");",
-        "        return 0; // Termina a execução se a leitura falhar",
-        "    }",
-        "",
-        "    // Formata o JSON (exatamente como no seu código original)",
-        "    char payload[64];",
-        "    int len = snprintf(payload, sizeof(payload), \"{\\\"temp\\\":%.2f,\\\"hum\\\":%.2f}\", t, h);",
-        "",
-        "    // 3. ADICIONAMOS VERIFICAÇÕES (ASSERTS) que o ESBMC pode testar",
-        "    // Esta é a parte mais poderosa: criamos propriedades para verificar.",
-        "    // Aqui, verificamos se a formatação do snprintf não causou um buffer overflow.",
-        "    __ESBMC_assert(len < sizeof(payload), \"Verificação de buffer overflow no payload\");",
-        "    ",
-        "    if (len > 0 && len < (int)sizeof(payload)) {",
-        "        client_publish(\"home/esp/dht\", payload);",
-        "        printf(\"Publicado (simulado): %s\\n\", payload);",
-        "    } else {",
-        "        printf(\"Erro ao formatar payload (simulado)\\n\");",
-        "    }",
-        "    ",
-        "    return 0;",
+        "int main () {",
+        "  n = BLOCK_SIZE;",
+        "  a = malloc (n * sizeof(*a));",
+        "  b = malloc (n * sizeof(*b));",
+        "  *b++ = 0;",
+        "  foo ();",
+        "  if (b[-1])",
+        "  { free(a); free(b); }",
+        "  else",
+        "  { free(a); free(b); }",
+        "  return 0;",
         "}"
       ]
     },
@@ -108,63 +88,126 @@
     "steps": [
       {
         "assignment": {
-          "lhs": "h",
-          "lhs_type": "unknown(12)",
-          "rhs": "1.401298e-45f",
-          "rhs_type": "unknown(12)"
+          "lhs": "a",
+          "lhs_type": "pointer",
+          "rhs": {
+            "__type": "pointer",
+            "address": "(signed int *)0",
+            "value": "*(signed int *)0"
+          },
+          "rhs_type": "pointer"
         },
         "file": "codigo.c",
         "function": "main",
-        "line": "20",
+        "line": "14",
         "step_number": 0,
         "type": "assignment"
       },
       {
         "assignment": {
-          "lhs": "t",
-          "lhs_type": "unknown(12)",
-          "rhs": "1.401298e-45f",
-          "rhs_type": "unknown(12)"
+          "lhs": "b",
+          "lhs_type": "pointer",
+          "rhs": {
+            "__type": "pointer",
+            "address": "(signed int *)0",
+            "value": "*(signed int *)0"
+          },
+          "rhs_type": "pointer"
         },
         "file": "codigo.c",
         "function": "main",
-        "line": "21",
+        "line": "15",
         "step_number": 1,
         "type": "assignment"
       },
       {
         "file": "codigo.c",
         "function": "main",
-        "line": "31",
+        "line": "16",
         "step_number": 2,
-        "type": "other"
+        "type": "assert"
       },
       {
         "assertion": {
-          "comment": "Verificação de buffer overflow no payload",
-          "guard": "(unsigned long int)len < 64",
+          "comment": "dereference failure: NULL pointer",
+          "guard": "1",
           "violated": true
         },
         "file": "codigo.c",
         "function": "main",
-        "line": "36",
-        "message": "Verificação de buffer overflow no payload",
+        "line": "16",
+        "message": "dereference failure: NULL pointer",
         "step_number": 3,
         "type": "violation"
       },
       {
         "file": "codigo.c",
         "function": "main",
-        "line": "42",
+        "line": "16",
         "step_number": 4,
-        "type": "other"
+        "type": "assert"
       },
       {
         "file": "codigo.c",
         "function": "main",
-        "line": "46",
-        "message": "Assumption restriction",
+        "line": "16",
         "step_number": 5,
+        "type": "assert"
+      },
+      {
+        "file": "codigo.c",
+        "function": "main",
+        "line": "16",
+        "step_number": 6,
+        "type": "assert"
+      },
+      {
+        "file": "codigo.c",
+        "function": "foo",
+        "line": "8",
+        "step_number": 7,
+        "type": "assert"
+      },
+      {
+        "assertion": {
+          "comment": "dereference failure: NULL pointer",
+          "guard": "1",
+          "violated": true
+        },
+        "file": "codigo.c",
+        "function": "foo",
+        "line": "8",
+        "message": "dereference failure: NULL pointer",
+        "step_number": 8,
+        "type": "violation"
+      },
+      {
+        "file": "codigo.c",
+        "function": "foo",
+        "line": "8",
+        "step_number": 9,
+        "type": "assert"
+      },
+      {
+        "file": "codigo.c",
+        "function": "foo",
+        "line": "8",
+        "step_number": 10,
+        "type": "assert"
+      },
+      {
+        "file": "codigo.c",
+        "function": "foo",
+        "line": "8",
+        "step_number": 11,
+        "type": "assert"
+      },
+      {
+        "file": "codigo.c",
+        "function": "foo",
+        "line": "7",
+        "message": "Assumption restriction",
+        "step_number": 12,
         "type": "assume"
       }
     ]

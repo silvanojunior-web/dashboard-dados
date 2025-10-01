@@ -4,62 +4,210 @@
       "files": {
         "codigo.c": {
           "coverage_stats": {
-            "covered_lines": 2,
-            "total_hits": 2
+            "covered_lines": 5,
+            "total_hits": 13
           },
           "covered_lines": {
-            "6": {
+            "14": {
+              "covered": true,
+              "hits": 1,
+              "type": "execution"
+            },
+            "15": {
+              "covered": true,
+              "hits": 1,
+              "type": "execution"
+            },
+            "16": {
+              "covered": true,
+              "hits": 5,
+              "type": "violation"
+            },
+            "7": {
               "covered": true,
               "hits": 1,
               "type": "execution"
             },
             "8": {
               "covered": true,
-              "hits": 1,
+              "hits": 5,
               "type": "violation"
             }
           }
         }
       }
     },
-    "initial_values": {},
+    "initial_values": {
+      "a": {
+        "name": "a",
+        "type": "pointer",
+        "value": {
+          "__type": "pointer",
+          "address": "(signed int *)0",
+          "value": "*(signed int *)0"
+        }
+      },
+      "b": {
+        "name": "b",
+        "type": "pointer",
+        "value": {
+          "__type": "pointer",
+          "address": "(signed int *)0",
+          "value": "*(signed int *)0"
+        }
+      }
+    },
     "source_files": {
       "codigo.c": [
-        "// teste_array_limite.c",
-        "int main() {",
-        "    int meu_array[10]; // Índices válidos são de 0 a 9.",
-        "    ",
-        "    // O loop vai de i=0 até i=10.",
-        "    for (int i = 0; i <= 10; i++) {",
-        "        // ERRO: Na última iteração, i será 10, que está fora dos limites do array.",
-        "        meu_array[i] = i; ",
-        "    }",
-        "    ",
-        "    return 0;",
+        "#include <stdlib.h>",
+        "int *a, *b;",
+        "int n;",
+        "#define BLOCK_SIZE 128",
+        "void foo () {",
+        "  int i;",
+        "  for (i = 0; i < n; i++)",
+        "    a[i] = -1;",
+        "  for (i = 0; i < BLOCK_SIZE - 1; i++)",
+        "    b[i] = -1;",
+        "}",
+        "int main () {",
+        "  n = BLOCK_SIZE;",
+        "  a = malloc (n * sizeof(*a));",
+        "  b = malloc (n * sizeof(*b));",
+        "  *b++ = 0;",
+        "  foo ();",
+        "  if (b[-1])",
+        "  { free(a); free(b); }",
+        "  else",
+        "  { free(a); free(b); }",
+        "  return 0;",
         "}"
       ]
     },
     "status": "violation",
     "steps": [
       {
+        "assignment": {
+          "lhs": "a",
+          "lhs_type": "pointer",
+          "rhs": {
+            "__type": "pointer",
+            "address": "(signed int *)0",
+            "value": "*(signed int *)0"
+          },
+          "rhs_type": "pointer"
+        },
+        "file": "codigo.c",
+        "function": "main",
+        "line": "14",
+        "step_number": 0,
+        "type": "assignment"
+      },
+      {
+        "assignment": {
+          "lhs": "b",
+          "lhs_type": "pointer",
+          "rhs": {
+            "__type": "pointer",
+            "address": "(signed int *)0",
+            "value": "*(signed int *)0"
+          },
+          "rhs_type": "pointer"
+        },
+        "file": "codigo.c",
+        "function": "main",
+        "line": "15",
+        "step_number": 1,
+        "type": "assignment"
+      },
+      {
+        "file": "codigo.c",
+        "function": "main",
+        "line": "16",
+        "step_number": 2,
+        "type": "assert"
+      },
+      {
         "assertion": {
-          "comment": "array bounds violated: array `meu_array' upper bound",
-          "guard": "(signed long int)i < 10",
+          "comment": "dereference failure: NULL pointer",
+          "guard": "1",
           "violated": true
         },
         "file": "codigo.c",
         "function": "main",
-        "line": "8",
-        "message": "array bounds violated: array `meu_array' upper bound",
-        "step_number": 0,
+        "line": "16",
+        "message": "dereference failure: NULL pointer",
+        "step_number": 3,
         "type": "violation"
       },
       {
         "file": "codigo.c",
         "function": "main",
-        "line": "6",
+        "line": "16",
+        "step_number": 4,
+        "type": "assert"
+      },
+      {
+        "file": "codigo.c",
+        "function": "main",
+        "line": "16",
+        "step_number": 5,
+        "type": "assert"
+      },
+      {
+        "file": "codigo.c",
+        "function": "main",
+        "line": "16",
+        "step_number": 6,
+        "type": "assert"
+      },
+      {
+        "file": "codigo.c",
+        "function": "foo",
+        "line": "8",
+        "step_number": 7,
+        "type": "assert"
+      },
+      {
+        "assertion": {
+          "comment": "dereference failure: NULL pointer",
+          "guard": "1",
+          "violated": true
+        },
+        "file": "codigo.c",
+        "function": "foo",
+        "line": "8",
+        "message": "dereference failure: NULL pointer",
+        "step_number": 8,
+        "type": "violation"
+      },
+      {
+        "file": "codigo.c",
+        "function": "foo",
+        "line": "8",
+        "step_number": 9,
+        "type": "assert"
+      },
+      {
+        "file": "codigo.c",
+        "function": "foo",
+        "line": "8",
+        "step_number": 10,
+        "type": "assert"
+      },
+      {
+        "file": "codigo.c",
+        "function": "foo",
+        "line": "8",
+        "step_number": 11,
+        "type": "assert"
+      },
+      {
+        "file": "codigo.c",
+        "function": "foo",
+        "line": "7",
         "message": "Assumption restriction",
-        "step_number": 1,
+        "step_number": 12,
         "type": "assume"
       }
     ]

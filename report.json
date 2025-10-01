@@ -1,4 +1,215 @@
-{
-    "status": "FAILURE_RAW_TEXT",
-    "raw_output": "ESBMC version 7.10.0 64-bit x86_64 linux\nTarget: 64-bit little-endian x86_64-unknown-linux with esbmclibc\nParsing /tmp/tmpkl_2oyhn.c\nConverting\nGenerating GOTO Program\nGOTO program creation time: 0.493s\nGOTO program processing time: 0.007s\nChecking base case, k = 1\nStarting Bounded Model Checking\nNot unwinding loop 14 iteration 1   file /tmp/tmpkl_2oyhn.c line 7 column 3 function foo\nSymex completed in: 0.003s (51 assignments)\nSlicing time: 0.001s (removed 28 assignments)\nGenerated 10 VCC(s), 10 remaining after simplification (23 assignments)\nNo solver specified; defaulting to z3\nEncoding remaining VCC(s) using bit-vector/floating-point arithmetic\nEncoding to solver time: 0.001s\nSolving with solver Z3 v4.8.12\nRuntime decision procedure: 0.086s\nBuilding error trace\nGenerating JSON report for trace: 1\n\n[Counterexample]\n\n\nState 1 file /tmp/tmpkl_2oyhn.c line 14 column 3 function main thread 0\n----------------------------------------------------\n  a = (signed int *)0\n\nState 2 file /tmp/tmpkl_2oyhn.c line 15 column 3 function main thread 0\n----------------------------------------------------\n  b = (signed int *)0\n\nState 4 file /tmp/tmpkl_2oyhn.c line 16 column 3 function main thread 0\n----------------------------------------------------\nViolated property:\n  file /tmp/tmpkl_2oyhn.c line 16 column 3 function main\n  dereference failure: NULL pointer\n\n\nVERIFICATION FAILED\n\nBug found (k = 1)\n"
-}
+[
+  {
+    "coverage": {
+      "files": {
+        "codigo.c": {
+          "coverage_stats": {
+            "covered_lines": 5,
+            "total_hits": 13
+          },
+          "covered_lines": {
+            "14": {
+              "covered": true,
+              "hits": 1,
+              "type": "execution"
+            },
+            "15": {
+              "covered": true,
+              "hits": 1,
+              "type": "execution"
+            },
+            "16": {
+              "covered": true,
+              "hits": 5,
+              "type": "violation"
+            },
+            "7": {
+              "covered": true,
+              "hits": 1,
+              "type": "execution"
+            },
+            "8": {
+              "covered": true,
+              "hits": 5,
+              "type": "violation"
+            }
+          }
+        }
+      }
+    },
+    "initial_values": {
+      "a": {
+        "name": "a",
+        "type": "pointer",
+        "value": {
+          "__type": "pointer",
+          "address": "(signed int *)0",
+          "value": "*(signed int *)0"
+        }
+      },
+      "b": {
+        "name": "b",
+        "type": "pointer",
+        "value": {
+          "__type": "pointer",
+          "address": "(signed int *)0",
+          "value": "*(signed int *)0"
+        }
+      }
+    },
+    "source_files": {
+      "codigo.c": [
+        "#include <stdlib.h>",
+        "int *a, *b;",
+        "int n;",
+        "#define BLOCK_SIZE 128",
+        "void foo () {",
+        "  int i;",
+        "  for (i = 0; i < n; i++)",
+        "    a[i] = -1;",
+        "  for (i = 0; i < BLOCK_SIZE - 1; i++)",
+        "    b[i] = -1;",
+        "}",
+        "int main () {",
+        "  n = BLOCK_SIZE;",
+        "  a = malloc (n * sizeof(*a));",
+        "  b = malloc (n * sizeof(*b));",
+        "  *b++ = 0;",
+        "  foo ();",
+        "  if (b[-1])",
+        "  { free(a); free(b); }",
+        "  else",
+        "  { free(a); free(b); }",
+        "  return 0;",
+        "}"
+      ]
+    },
+    "status": "violation",
+    "steps": [
+      {
+        "assignment": {
+          "lhs": "a",
+          "lhs_type": "pointer",
+          "rhs": {
+            "__type": "pointer",
+            "address": "(signed int *)0",
+            "value": "*(signed int *)0"
+          },
+          "rhs_type": "pointer"
+        },
+        "file": "codigo.c",
+        "function": "main",
+        "line": "14",
+        "step_number": 0,
+        "type": "assignment"
+      },
+      {
+        "assignment": {
+          "lhs": "b",
+          "lhs_type": "pointer",
+          "rhs": {
+            "__type": "pointer",
+            "address": "(signed int *)0",
+            "value": "*(signed int *)0"
+          },
+          "rhs_type": "pointer"
+        },
+        "file": "codigo.c",
+        "function": "main",
+        "line": "15",
+        "step_number": 1,
+        "type": "assignment"
+      },
+      {
+        "file": "codigo.c",
+        "function": "main",
+        "line": "16",
+        "step_number": 2,
+        "type": "assert"
+      },
+      {
+        "assertion": {
+          "comment": "dereference failure: NULL pointer",
+          "guard": "1",
+          "violated": true
+        },
+        "file": "codigo.c",
+        "function": "main",
+        "line": "16",
+        "message": "dereference failure: NULL pointer",
+        "step_number": 3,
+        "type": "violation"
+      },
+      {
+        "file": "codigo.c",
+        "function": "main",
+        "line": "16",
+        "step_number": 4,
+        "type": "assert"
+      },
+      {
+        "file": "codigo.c",
+        "function": "main",
+        "line": "16",
+        "step_number": 5,
+        "type": "assert"
+      },
+      {
+        "file": "codigo.c",
+        "function": "main",
+        "line": "16",
+        "step_number": 6,
+        "type": "assert"
+      },
+      {
+        "file": "codigo.c",
+        "function": "foo",
+        "line": "8",
+        "step_number": 7,
+        "type": "assert"
+      },
+      {
+        "assertion": {
+          "comment": "dereference failure: NULL pointer",
+          "guard": "1",
+          "violated": true
+        },
+        "file": "codigo.c",
+        "function": "foo",
+        "line": "8",
+        "message": "dereference failure: NULL pointer",
+        "step_number": 8,
+        "type": "violation"
+      },
+      {
+        "file": "codigo.c",
+        "function": "foo",
+        "line": "8",
+        "step_number": 9,
+        "type": "assert"
+      },
+      {
+        "file": "codigo.c",
+        "function": "foo",
+        "line": "8",
+        "step_number": 10,
+        "type": "assert"
+      },
+      {
+        "file": "codigo.c",
+        "function": "foo",
+        "line": "8",
+        "step_number": 11,
+        "type": "assert"
+      },
+      {
+        "file": "codigo.c",
+        "function": "foo",
+        "line": "7",
+        "message": "Assumption restriction",
+        "step_number": 12,
+        "type": "assume"
+      }
+    ]
+  }
+]

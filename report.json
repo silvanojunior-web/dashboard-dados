@@ -5,18 +5,18 @@
         "codigo.c": {
           "coverage_stats": {
             "covered_lines": 2,
-            "total_hits": 3
+            "total_hits": 2
           },
           "covered_lines": {
             "6": {
               "covered": true,
-              "hits": 2,
-              "type": "violation"
-            },
-            "9": {
-              "covered": true,
               "hits": 1,
               "type": "execution"
+            },
+            "8": {
+              "covered": true,
+              "hits": 1,
+              "type": "violation"
             }
           }
         }
@@ -25,12 +25,15 @@
     "initial_values": {},
     "source_files": {
       "codigo.c": [
-        "// teste_ponteiro_nulo.c",
+        "// teste_array_limite.c",
         "int main() {",
-        "    int *ponteiro = 0; // O mesmo que int *ponteiro = NULL;",
+        "    int meu_array[10]; // Índices válidos são de 0 a 9.",
         "    ",
-        "    // ERRO: Tentando escrever dados em um endereço de memória inválido (nulo).",
-        "    *ponteiro = 42;",
+        "    // O loop vai de i=0 até i=10.",
+        "    for (int i = 0; i <= 10; i++) {",
+        "        // ERRO: Na última iteração, i será 10, que está fora dos limites do array.",
+        "        meu_array[i] = i; ",
+        "    }",
         "    ",
         "    return 0;",
         "}"
@@ -39,31 +42,24 @@
     "status": "violation",
     "steps": [
       {
-        "file": "codigo.c",
-        "function": "main",
-        "line": "6",
-        "step_number": 0,
-        "type": "assert"
-      },
-      {
         "assertion": {
-          "comment": "dereference failure: NULL pointer",
-          "guard": "1",
+          "comment": "array bounds violated: array `meu_array' upper bound",
+          "guard": "(signed long int)i < 10",
           "violated": true
         },
         "file": "codigo.c",
         "function": "main",
-        "line": "6",
-        "message": "dereference failure: NULL pointer",
-        "step_number": 1,
+        "line": "8",
+        "message": "array bounds violated: array `meu_array' upper bound",
+        "step_number": 0,
         "type": "violation"
       },
       {
         "file": "codigo.c",
         "function": "main",
-        "line": "9",
+        "line": "6",
         "message": "Assumption restriction",
-        "step_number": 2,
+        "step_number": 1,
         "type": "assume"
       }
     ]

@@ -2,7 +2,7 @@
   {
     "coverage": {
       "files": {
-        "file.c": {
+        "codigo.c": {
           "coverage_stats": {
             "covered_lines": 5,
             "total_hits": 13
@@ -58,7 +58,7 @@
       }
     },
     "source_files": {
-      "file.c": [
+      "codigo.c": [
         "#include <stdlib.h>",
         "int *a, *b;",
         "int n;",
@@ -97,7 +97,7 @@
           },
           "rhs_type": "pointer"
         },
-        "file": "file.c",
+        "file": "codigo.c",
         "function": "main",
         "line": "14",
         "step_number": 0,
@@ -114,14 +114,14 @@
           },
           "rhs_type": "pointer"
         },
-        "file": "file.c",
+        "file": "codigo.c",
         "function": "main",
         "line": "15",
         "step_number": 1,
         "type": "assignment"
       },
       {
-        "file": "file.c",
+        "file": "codigo.c",
         "function": "main",
         "line": "16",
         "step_number": 2,
@@ -133,7 +133,7 @@
           "guard": "1",
           "violated": true
         },
-        "file": "file.c",
+        "file": "codigo.c",
         "function": "main",
         "line": "16",
         "message": "dereference failure: NULL pointer",
@@ -141,28 +141,28 @@
         "type": "violation"
       },
       {
-        "file": "file.c",
+        "file": "codigo.c",
         "function": "main",
         "line": "16",
         "step_number": 4,
         "type": "assert"
       },
       {
-        "file": "file.c",
+        "file": "codigo.c",
         "function": "main",
         "line": "16",
         "step_number": 5,
         "type": "assert"
       },
       {
-        "file": "file.c",
+        "file": "codigo.c",
         "function": "main",
         "line": "16",
         "step_number": 6,
         "type": "assert"
       },
       {
-        "file": "file.c",
+        "file": "codigo.c",
         "function": "foo",
         "line": "8",
         "step_number": 7,
@@ -174,7 +174,7 @@
           "guard": "1",
           "violated": true
         },
-        "file": "file.c",
+        "file": "codigo.c",
         "function": "foo",
         "line": "8",
         "message": "dereference failure: NULL pointer",
@@ -182,28 +182,28 @@
         "type": "violation"
       },
       {
-        "file": "file.c",
+        "file": "codigo.c",
         "function": "foo",
         "line": "8",
         "step_number": 9,
         "type": "assert"
       },
       {
-        "file": "file.c",
+        "file": "codigo.c",
         "function": "foo",
         "line": "8",
         "step_number": 10,
         "type": "assert"
       },
       {
-        "file": "file.c",
+        "file": "codigo.c",
         "function": "foo",
         "line": "8",
         "step_number": 11,
         "type": "assert"
       },
       {
-        "file": "file.c",
+        "file": "codigo.c",
         "function": "foo",
         "line": "7",
         "message": "Assumption restriction",

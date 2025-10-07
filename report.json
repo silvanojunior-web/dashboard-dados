@@ -4,90 +4,37 @@
       "files": {
         "codigo.c": {
           "coverage_stats": {
-            "covered_lines": 7,
-            "total_hits": 8
+            "covered_lines": 2,
+            "total_hits": 2
           },
           "covered_lines": {
-            "11": {
+            "12": {
+              "covered": true,
+              "hits": 1,
+              "type": "execution"
+            },
+            "9": {
               "covered": true,
               "hits": 1,
               "type": "violation"
-            },
-            "14": {
-              "covered": true,
-              "hits": 1,
-              "type": "execution"
-            },
-            "16": {
-              "covered": true,
-              "hits": 2,
-              "type": "execution"
-            },
-            "20": {
-              "covered": true,
-              "hits": 1,
-              "type": "execution"
-            },
-            "21": {
-              "covered": true,
-              "hits": 1,
-              "type": "execution"
-            },
-            "29": {
-              "covered": true,
-              "hits": 1,
-              "type": "execution"
-            },
-            "8": {
-              "covered": true,
-              "hits": 1,
-              "type": "execution"
             }
           }
         }
       }
     },
-    "initial_values": {
-      "entrada_indice": {
-        "name": "entrada_indice",
-        "type": "signed",
-        "value": "0"
-      },
-      "entrada_x": {
-        "name": "entrada_x",
-        "type": "signed",
-        "value": "-2147483648"
-      }
-    },
+    "initial_values": {},
     "source_files": {
       "codigo.c": [
-        "// arquivo: exemplo_erros.c",
+        "#include <math.h>",
         "#include <assert.h>",
-        "#include <stdio.h>",
-        "",
-        "void processar_dados(int x, int indice) {",
-        "    int dados[10] = {0};",
-        "    ",
-        "    printf(\"Processando x = %d e indice = %d\\n\", x, indice);",
-        "",
-        "    // Primeira propriedade: O valor de x não deve ser negativo",
-        "    assert(x >= 0); // <<<<<<<<<<< ERRO POTENCIAL 1",
-        "",
-        "    // Segunda propriedade: O índice deve estar dentro dos limites do array",
-        "    assert(indice < 10); // <<<<<<<<<<< ERRO POTENCIAL 2",
-        "    ",
-        "    dados[indice] = x;",
-        "}",
         "",
         "int main() {",
-        "    int entrada_x;",
-        "    int entrada_indice;",
+        "    float entrada = -1.0f;",
+        "    float resultado = sqrt(entrada);",
         "",
-        "    // O ESBMC irá explorar diferentes valores para estas variáveis",
-        "    // para tentar violar as asserções.",
+        "    // Esta asserção falha se 'resultado' for NaN (Not-a-Number)",
+        "    assert(resultado == resultado);",
         "",
-        "    processar_dados(entrada_x, entrada_indice);",
-        "    ",
         "    return 0;",
         "}"
       ]
@@ -95,78 +42,24 @@
     "status": "violation",
     "steps": [
       {
-        "assignment": {
-          "lhs": "entrada_x",
-          "lhs_type": "signed",
-          "rhs": "-2147483648",
-          "rhs_type": "signed"
-        },
-        "file": "codigo.c",
-        "function": "main",
-        "line": "20",
-        "step_number": 0,
-        "type": "assignment"
-      },
-      {
-        "assignment": {
-          "lhs": "entrada_indice",
-          "lhs_type": "signed",
-          "rhs": "0",
-          "rhs_type": "signed"
-        },
-        "file": "codigo.c",
-        "function": "main",
-        "line": "21",
-        "step_number": 1,
-        "type": "assignment"
-      },
-      {
-        "file": "codigo.c",
-        "function": "processar_dados",
-        "line": "8",
-        "step_number": 2,
-        "type": "other"
-      },
-      {
         "assertion": {
-          "comment": "assertion x >= 0",
-          "guard": "x >= 0",
+          "comment": "assertion resultado == resultado",
+          "guard": "resultado == resultado",
           "violated": true
         },
         "file": "codigo.c",
-        "function": "processar_dados",
-        "line": "11",
-        "message": "assertion x >= 0",
-        "step_number": 3,
+        "function": "main",
+        "line": "9",
+        "message": "assertion resultado == resultado",
+        "step_number": 0,
         "type": "violation"
       },
       {
         "file": "codigo.c",
-        "function": "processar_dados",
-        "line": "14",
-        "step_number": 4,
-        "type": "assert"
-      },
-      {
-        "file": "codigo.c",
-        "function": "processar_dados",
-        "line": "16",
-        "step_number": 5,
-        "type": "assert"
-      },
-      {
-        "file": "codigo.c",
-        "function": "processar_dados",
-        "line": "16",
-        "step_number": 6,
-        "type": "assert"
-      },
-      {
-        "file": "codigo.c",
         "function": "main",
-        "line": "29",
+        "line": "12",
         "message": "Assumption restriction",
-        "step_number": 7,
+        "step_number": 1,
         "type": "assume"
       }
     ]
